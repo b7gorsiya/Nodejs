@@ -1,4 +1,4 @@
-// JavaScript source code
+﻿// JavaScript source code
 
 const WebSocket = require('ws');
 const wss = new WebSocket.Server({ port: 8080 }, () => {
@@ -7,10 +7,15 @@ const wss = new WebSocket.Server({ port: 8080 }, () => {
 
 var player;
 var chatroom;
+var clients = [2];
+var clientsIndex = 0;
 
 wss.on('connection', function connection(ws) {
-    console.log('client coonected');
-   
+    id = Math.random();
+    console.log('connection is established : ' + id);
+    clients[clientsIndex] = ws;
+    clientsIndex++;
+    clients.push(ws);
     //send akg
     ws.send(' Connection Established')
     // Compare message for relative response to sent
@@ -63,13 +68,12 @@ wss.on('connection', function connection(ws) {
                 // Handle some other event
                 const datatobesent = {
                     type: 'ChatRecived',
-                    msgdata: player,
+                    msgdata: data.username,
                 };
-                //for brodcasting ~~~ but not working for some reason
-                wss.broadcast = function () {
-                    wss.clients.forEach(client => client.send(JSON.stringify(datatobesent)));
-                };
-                    ws.send(JSON.stringify(datatobesent));
+                for (var j = 0; j < clients.length; j++) {
+                    console.log('FOR : ', JSON.stringify(datatobesent));
+                    clients[j].send(JSON.stringify(datatobesent));
+                }
                 break;
             }
         }
