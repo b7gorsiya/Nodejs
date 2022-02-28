@@ -7,14 +7,13 @@ const wss = new WebSocket.Server({ port: 8080 }, () => {
 
 var player;
 var chatroom;
-var clients = [2];
+var clients = [];
 var clientsIndex = 0;
 
 wss.on('connection', function connection(ws) {
     id = Math.random();
     console.log('connection is established : ' + id);
-    clients[clientsIndex] = ws;
-    clientsIndex++;
+    clients[id];
     clients.push(ws);
     //send akg
     ws.send(' Connection Established')
@@ -71,7 +70,7 @@ wss.on('connection', function connection(ws) {
                     msgdata: data.username,
                 };
                 for (var j = 0; j < clients.length; j++) {
-                    console.log('FOR : ', JSON.stringify(datatobesent));
+                    console.log(JSON.stringify(datatobesent));
                     clients[j].send(JSON.stringify(datatobesent));
                 }
                 break;

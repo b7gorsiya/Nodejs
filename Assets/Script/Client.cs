@@ -176,6 +176,7 @@ public class Client : MonoBehaviour
     void Chat()
     {
         userdata.datatype = "Chat";
+        userdata.username = username_input.text;
         ws.Send(JsonUtility.ToJson(userdata));
     }
 }
